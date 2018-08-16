@@ -210,6 +210,7 @@ function build(settings)
 	-- build the small libraries
 	wavpack = Compile(settings, Collect("src/engine/external/wavpack/*.c"))
 	pnglite = Compile(settings, Collect("src/engine/external/pnglite/*.c"))
+	md5 = Compile(settings, "src/engine/external/md5/md5.c")
 
 	-- build game components
 	engine_settings = settings:Copy()
@@ -288,7 +289,7 @@ function build(settings)
 	tools = {}
 	for i,v in ipairs(tools_src) do
 		toolname = PathFilename(PathBase(v))
-		tools[i] = Link(settings, toolname, Compile(settings, v), engine, zlib, pnglite)
+		tools[i] = Link(settings, toolname, Compile(settings, v), engine, zlib, pnglite, md5)
 	end
 
 	-- build client, server, version server and master server
@@ -297,7 +298,7 @@ function build(settings)
 		client_link_other, client_osxlaunch)
 
 	server_exe = Link(server_settings, "DDRace-Server", engine, server,
-		game_shared, game_server, zlib, server_link_other)
+		game_shared, game_server, zlib, server_link_other, md5)
 
 	serverlaunch = {}
 	if platform == "macosx" then
@@ -305,7 +306,7 @@ function build(settings)
 	end
 
 	versionserver_exe = Link(server_settings, "versionsrv", versionserver,
-		engine, zlib)
+		engine, zlib, md5)
 
 	masterserver_exe = Link(server_settings, "mastersrv", masterserver,
 		engine, zlib)

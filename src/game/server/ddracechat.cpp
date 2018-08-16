@@ -740,11 +740,13 @@ bool CheckClientID(int ClientID)
 	return true;
 }
 
+static char msg[3][128] = {"game/round timer.", "broadcast.", "both game/round timer and broadcast."};
+
 char* TimerType(int TimerType)
 {
-	char msg[3][128] = {"game/round timer.", "broadcast.", "both game/round timer and broadcast."};
 	return msg[TimerType];
 }
+
 void CGameContext::ConSayTime(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *) pUserData;
